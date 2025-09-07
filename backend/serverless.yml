@@ -1,0 +1,51 @@
+# Serverless Framework configuration for AWS Lambda deployment
+service: barbershop-backend
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  stage: ${opt:stage, 'dev'}
+  environment:
+    MONGODB_URI: ${env:MONGODB_URI}
+    JWT_SECRET: ${env:JWT_SECRET}
+    EMAIL_HOST: ${env:EMAIL_HOST}
+    EMAIL_PORT: ${env:EMAIL_PORT}
+    EMAIL_USER: ${env:EMAIL_USER}
+    EMAIL_PASS: ${env:EMAIL_PASS}
+    EMAIL_FROM: ${env:EMAIL_FROM}
+    FRONTEND_WEB_URL: ${env:FRONTEND_WEB_URL}
+  httpApi:
+    cors:
+      allowedOrigins:
+        - ${env:FRONTEND_WEB_URL}
+        - http://localhost:3000
+        - https://localhost:3000
+      allowedHeaders:
+        - Content-Type
+        - Authorization
+      allowedMethods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - OPTIONS
+
+functions:
+  api:
+    handler: serverless-handler.handler
+    events:
+      - httpApi:
+          path: /{proxy+}
+          method: ANY
+      - httpApi:
+          path: /
+          method: ANY
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 5000
+    host: 0.0.0.0
