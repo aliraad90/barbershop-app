@@ -18,3 +18,13 @@ frontend:
     paths:
       - frontend/web/node_modules/**/*
       - frontend/web/.npm/**/*
+backend:
+  phases:
+    build:
+      commands:
+        - echo "Installing backend dependencies..."
+        - cd amplify/backend/function/barbershopapi
+        - npm install
+    preDeploy:
+      commands:
+        - echo "Backend build completed"
