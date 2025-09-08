@@ -91,7 +91,9 @@ const HeroButtons = styled.div`
   margin-top: var(--spacing-xl);
 `;
 
-const HeroButton = styled(Button)`
+const HeroButton = styled(Button).withConfig({
+  shouldForwardProp: (prop) => prop !== 'fullWidth' && prop !== 'size' && prop !== 'variant',
+})`
   backdrop-filter: blur(10px);
   position: relative;
   overflow: hidden;

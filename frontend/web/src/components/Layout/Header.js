@@ -219,7 +219,9 @@ const UserAvatar = styled.div`
   border: 2px solid rgba(255, 255, 255, 0.2);
 `;
 
-const Dropdown = styled.div`
+const Dropdown = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isOpen',
+})`
   position: absolute;
   top: 100%;
   right: 0;

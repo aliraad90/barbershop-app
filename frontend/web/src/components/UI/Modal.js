@@ -3,7 +3,9 @@ import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 import { FiX } from 'react-icons/fi';
 
-const ModalOverlay = styled.div`
+const ModalOverlay = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isOpen',
+})`
   position: fixed;
   top: 0;
   left: 0;
@@ -21,7 +23,9 @@ const ModalOverlay = styled.div`
   transition: all var(--transition-normal);
 `;
 
-const ModalContainer = styled.div`
+const ModalContainer = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isOpen' && prop !== 'size',
+})`
   background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-xl);

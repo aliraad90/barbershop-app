@@ -2,7 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-const ButtonBase = styled.button`
+const ButtonBase = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== 'fullWidth' && prop !== 'size',
+})`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -139,7 +141,9 @@ const SuccessButton = styled(ButtonBase)`
   }
 `;
 
-const ButtonLink = styled(Link)`
+const ButtonLink = styled(Link).withConfig({
+  shouldForwardProp: (prop) => prop !== 'fullWidth' && prop !== 'size',
+})`
   display: inline-flex;
   align-items: center;
   justify-content: center;

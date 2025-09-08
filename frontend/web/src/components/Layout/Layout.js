@@ -23,7 +23,9 @@ const ContentWrapper = styled.div`
   min-height: calc(100vh - 80px); // Subtract header height
 `;
 
-const SidebarWrapper = styled.aside`
+const SidebarWrapper = styled.aside.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isOpen',
+})`
   width: 250px;
   background-color: var(--bg-secondary);
   border-right: 1px solid var(--border-color);
@@ -55,7 +57,9 @@ const PageContent = styled.div`
   }
 `;
 
-const Overlay = styled.div`
+const Overlay = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isOpen',
+})`
   position: fixed;
   top: 0;
   left: 0;
