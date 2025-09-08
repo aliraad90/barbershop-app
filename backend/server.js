@@ -15,16 +15,17 @@ const reviewRoutes = require('./routes/reviews');
 
 const app = express();
 
-// CORS FIX - Use express middleware directly
+// CORS FIX - Vercel optimized
 app.use((req, res, next) => {
   console.log(`🌐 ${req.method} ${req.path} from origin: ${req.headers.origin}`);
   
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Origin, Accept');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Max-Age', '86400'); // 24 hours
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization, Origin');
   
+  // Handle preflight requests
   if (req.method === 'OPTIONS') {
     console.log(`✅ Handling OPTIONS preflight request for ${req.path}`);
     res.status(200).end();
@@ -32,15 +33,6 @@ app.use((req, res, next) => {
   }
   
   next();
-});
-
-// Additional OPTIONS handler for all routes
-app.options('*', (req, res) => {
-  console.log(`🔄 OPTIONS request for: ${req.path}`);
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Origin, Accept');
-  res.status(200).end();
 });
 
 // Security middleware
