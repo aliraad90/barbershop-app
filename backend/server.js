@@ -25,45 +25,19 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// CORS configuration
+// CORS configuration - Temporary permissive setup
 app.use(cors({
-  origin: function (origin, callback) {
-    console.log(`🔍 CORS request from origin: ${origin}`);
-    
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) {
-      console.log(`✅ Allowing request with no origin`);
-      return callback(null, true);
-    }
-    
-    const allowedOrigins = [
-      'http://localhost:3000',
-      'http://localhost:3001', 
-      'http://localhost:8081',
-      'https://test123.com',
-      'http://test123.com',
-      'https://master.dkqmnkxw39wen.amplifyapp.com',
-      'https://master.d20ivhuuwamum4.amplifyapp.com'
-    ];
-    
-    // Allow any Amplify domain
-    if (origin.includes('.amplifyapp.com')) {
-      console.log(`✅ Allowing Amplify domain: ${origin}`);
-      return callback(null, true);
-    }
-    
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      console.log(`✅ Allowing known origin: ${origin}`);
-      callback(null, true);
-    } else {
-      console.log(`❌ Blocking unknown origin: ${origin}`);
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: true, // Allow all origins temporarily
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
+
+// Log all requests for debugging
+app.use((req, res, next) => {
+  console.log(`🌐 ${req.method} ${req.path} from origin: ${req.headers.origin}`);
+  next();
+});
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
