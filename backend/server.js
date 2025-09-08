@@ -15,15 +15,16 @@ const reviewRoutes = require('./routes/reviews');
 
 const app = express();
 
-// CORS FIX - Vercel optimized
+// CORS FIX - Nuclear option - handle everything manually
 app.use((req, res, next) => {
   console.log(`🌐 ${req.method} ${req.path} from origin: ${req.headers.origin}`);
   
-  // Set CORS headers
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  // Set ALL possible CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization, Origin');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
+  res.setHeader('Access-Control-Allow-Headers', '*');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Max-Age', '86400');
   
   // Handle preflight requests
   if (req.method === 'OPTIONS') {
@@ -33,6 +34,16 @@ app.use((req, res, next) => {
   }
   
   next();
+});
+
+// Add a simple test endpoint
+app.get('/api/test', (req, res) => {
+  console.log('🧪 Test endpoint hit!');
+  res.json({ 
+    message: 'CORS is working!', 
+    timestamp: new Date().toISOString(),
+    origin: req.headers.origin 
+  });
 });
 
 // Security middleware
