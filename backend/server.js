@@ -31,7 +31,8 @@ app.use(cors({
     process.env.FRONTEND_WEB_URL || 'http://localhost:3000',
     process.env.FRONTEND_MOBILE_URL || 'http://localhost:8081',
     'https://test123.com',
-    'http://test123.com'
+    'http://test123.com',
+    'https://master.dkqmnkxw39wen.amplifyapp.com'
   ],
   credentials: true
 }));
