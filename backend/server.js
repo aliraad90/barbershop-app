@@ -42,7 +42,8 @@ app.get('/api/test', (req, res) => {
   res.json({ 
     message: 'CORS is working!', 
     timestamp: new Date().toISOString(),
-    origin: req.headers.origin 
+    origin: req.headers.origin,
+    version: 'NUCLEAR-CORS-v2'
   });
 });
 
