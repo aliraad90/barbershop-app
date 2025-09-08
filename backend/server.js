@@ -25,19 +25,33 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// CORS configuration - Temporary permissive setup
-app.use(cors({
-  origin: true, // Allow all origins temporarily
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
-}));
-
-// Log all requests for debugging
+// BULLETPROOF CORS CONFIGURATION
 app.use((req, res, next) => {
   console.log(`🌐 ${req.method} ${req.path} from origin: ${req.headers.origin}`);
+  
+  // Set CORS headers manually
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    console.log(`✅ Handling OPTIONS preflight request`);
+    res.status(200).end();
+    return;
+  }
+  
   next();
 });
+
+// Additional CORS middleware as backup
+app.use(cors({
+  origin: true,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Origin', 'Accept']
+}));
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
@@ -75,6 +89,17 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({
     status: 'success',
     message: 'Barbershop API is running',
+    timestamp: new Date().toISOString(),
+    cors: 'enabled',
+    origin: req.headers.origin || 'no-origin'
+  });
+});
+
+// Test CORS endpoint
+app.get('/api/test-cors', (req, res) => {
+  res.status(200).json({
+    message: 'CORS is working!',
+    origin: req.headers.origin,
     timestamp: new Date().toISOString()
   });
 });
