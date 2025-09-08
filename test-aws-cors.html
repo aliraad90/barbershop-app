@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AWS Amplify CORS Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        button { padding: 15px 30px; margin: 10px; font-size: 16px; background: #3b82f6; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #2563eb; }
+        .success { color: green; background: #f0f9ff; padding: 15px; border-radius: 5px; margin: 10px 0; }
+        .error { color: red; background: #fef2f2; padding: 15px; border-radius: 5px; margin: 10px 0; }
+        .info { color: blue; background: #eff6ff; padding: 15px; border-radius: 5px; margin: 10px 0; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 AWS Amplify CORS Test</h1>
+        <p class="info">This test simulates the exact same requests your AWS Amplify app makes to Railway backend.</p>
+        
+        <div>
+            <button onclick="testDirect()">Test Direct Railway Access</button>
+            <button onclick="testWithOrigin()">Test with Amplify Origin</button>
+            <button onclick="testEmailOTP()">Test Email OTP</button>
+        </div>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'https://barbershop-app-production.up.railway.app/api';
+        
+        function testDirect() {
+            const result = document.getElementById('result');
+            result.innerHTML = '<div class="info">🔄 Testing direct Railway access...</div>';
+            
+            fetch(`${API_BASE_URL}/health`)
+            .then(response => {
+                console.log('Response status:', response.status);
+                console.log('Response headers:', [...response.headers.entries()]);
+                return response.text();
+            })
+            .then(data => {
+                result.innerHTML = '<div class="success">✅ Direct Access SUCCESS!<br><pre>' + data + '</pre></div>';
+            })
+            .catch(error => {
+                result.innerHTML = '<div class="error">❌ Direct Access FAILED:<br>' + error.message + '</div>';
+            });
+        }
+
+        function testWithOrigin() {
+            const result = document.getElementById('result');
+            result.innerHTML = '<div class="info">🔄 Testing with Amplify origin header...</div>';
+            
+            fetch(`${API_BASE_URL}/test-cors`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Origin': 'https://master.dkqmnkxw39wen.amplifyapp.com'
+                }
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                console.log('Response headers:', [...response.headers.entries()]);
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            })
+            .then(data => {
+                result.innerHTML = '<div class="success">✅ CORS with Origin SUCCESS!<br><pre>' + JSON.stringify(data, null, 2) + '</pre></div>';
+            })
+            .catch(error => {
+                result.innerHTML = '<div class="error">❌ CORS with Origin FAILED:<br>' + error.message + '</div>';
+            });
+        }
+
+        function testEmailOTP() {
+            const result = document.getElementById('result');
+            result.innerHTML = '<div class="info">🔄 Testing Email OTP with Amplify origin...</div>';
+            
+            fetch(`${API_BASE_URL}/auth/send-email-otp`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Origin': 'https://master.dkqmnkxw39wen.amplifyapp.com'
+                },
+                body: JSON.stringify({
+                    email: 'test@example.com',
+                    name: 'Test User'
+                })
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                console.log('Response headers:', [...response.headers.entries()]);
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            })
+            .then(data => {
+                result.innerHTML = '<div class="success">✅ Email OTP SUCCESS!<br><pre>' + JSON.stringify(data, null, 2) + '</pre></div>';
+            })
+            .catch(error => {
+                result.innerHTML = '<div class="error">❌ Email OTP FAILED:<br>' + error.message + '</div>';
+            });
+        }
+    </script>
+</body>
+</html>

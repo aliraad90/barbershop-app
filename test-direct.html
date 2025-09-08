@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Direct Railway Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        button { padding: 15px 30px; margin: 10px; font-size: 16px; background: #3b82f6; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .result { margin: 20px 0; padding: 15px; border-radius: 5px; }
+        .success { background: #f0f9ff; color: green; }
+        .error { background: #fef2f2; color: red; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Direct Railway Test</h1>
+    <p>This test bypasses CORS by using a different approach.</p>
+    
+    <button onclick="testRailway()">Test Railway Direct</button>
+    <div id="result"></div>
+
+    <script>
+        function testRailway() {
+            const result = document.getElementById('result');
+            result.innerHTML = '<div class="result">🔄 Testing Railway...</div>';
+            
+            // Use a simple approach that doesn't trigger CORS
+            const img = new Image();
+            img.onload = function() {
+                result.innerHTML = '<div class="result success">✅ Railway is responding!</div>';
+            };
+            img.onerror = function() {
+                result.innerHTML = '<div class="result error">❌ Railway is not responding</div>';
+            };
+            
+            // Try to load a simple endpoint
+            img.src = 'https://barbershop-app-production.up.railway.app/api/health';
+        }
+    </script>
+</body>
+</html>

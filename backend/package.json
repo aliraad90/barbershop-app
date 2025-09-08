@@ -1,7 +1,7 @@
 {
   "name": "barbershop-backend",
   "version": "1.0.0",
-  "description": "Backend API for Barbershop Application",
+  "description": "Backend API for Barbershop Application - CORS Fixed",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

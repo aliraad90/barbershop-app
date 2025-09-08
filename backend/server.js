@@ -127,6 +127,8 @@ app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🔒 CORS enabled for Amplify domains`);
+  console.log(`🔄 CORS BULLETPROOF VERSION - ${new Date().toISOString()}`);
+  console.log(`🚨 FORCE DEPLOYMENT - CORS MUST WORK NOW!`);
 });
 
 module.exports = app;

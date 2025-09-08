@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CORS Test - AWS Amplify</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        button { padding: 10px 20px; margin: 10px; font-size: 16px; }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>🧪 CORS Test for Barbershop App</h1>
+    <p class="info">This test simulates requests from your AWS Amplify app to Railway backend.</p>
+    
+    <button onclick="testCORS()">Test CORS Connection</button>
+    <button onclick="testEmailOTP()">Test Email OTP</button>
+    <button onclick="testHealth()">Test Health Check</button>
+    
+    <div id="result"></div>
+
+    <script>
+        // Simulate the same origin as your AWS Amplify app
+        const API_BASE_URL = 'https://barbershop-app-production.up.railway.app/api';
+        
+        function testCORS() {
+            const result = document.getElementById('result');
+            result.innerHTML = '<p class="info">🔄 Testing CORS connection...</p>';
+            
+            fetch(`${API_BASE_URL}/test-cors`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Origin': 'https://master.dkqmnkxw39wen.amplifyapp.com'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            })
+            .then(data => {
+                result.innerHTML = '<p class="success">✅ CORS Test SUCCESS!<br>' + JSON.stringify(data, null, 2) + '</p>';
+            })
+            .catch(error => {
+                result.innerHTML = '<p class="error">❌ CORS Test FAILED:<br>' + error.message + '</p>';
+            });
+        }
+
+        function testHealth() {
+            const result = document.getElementById('result');
+            result.innerHTML = '<p class="info">🔄 Testing health check...</p>';
+            
+            fetch(`${API_BASE_URL}/health`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Origin': 'https://master.dkqmnkxw39wen.amplifyapp.com'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            })
+            .then(data => {
+                result.innerHTML = '<p class="success">✅ Health Check SUCCESS!<br>' + JSON.stringify(data, null, 2) + '</p>';
+            })
+            .catch(error => {
+                result.innerHTML = '<p class="error">❌ Health Check FAILED:<br>' + error.message + '</p>';
+            });
+        }
+
+        function testEmailOTP() {
+            const result = document.getElementById('result');
+            result.innerHTML = '<p class="info">🔄 Testing Email OTP...</p>';
+            
+            fetch(`${API_BASE_URL}/auth/send-email-otp`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Origin': 'https://master.dkqmnkxw39wen.amplifyapp.com'
+                },
+                body: JSON.stringify({
+                    email: 'test@example.com',
+                    name: 'Test User'
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            })
+            .then(data => {
+                result.innerHTML = '<p class="success">✅ Email OTP Test SUCCESS!<br>' + JSON.stringify(data, null, 2) + '</p>';
+            })
+            .catch(error => {
+                result.innerHTML = '<p class="error">❌ Email OTP Test FAILED:<br>' + error.message + '</p>';
+            });
+        }
+    </script>
+</body>
+</html>
