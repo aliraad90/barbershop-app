@@ -28,8 +28,13 @@ app.use(limiter);
 // CORS configuration
 app.use(cors({
   origin: function (origin, callback) {
+    console.log(`🔍 CORS request from origin: ${origin}`);
+    
     // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
+    if (!origin) {
+      console.log(`✅ Allowing request with no origin`);
+      return callback(null, true);
+    }
     
     const allowedOrigins = [
       'http://localhost:3000',
@@ -43,12 +48,15 @@ app.use(cors({
     
     // Allow any Amplify domain
     if (origin.includes('.amplifyapp.com')) {
+      console.log(`✅ Allowing Amplify domain: ${origin}`);
       return callback(null, true);
     }
     
     if (allowedOrigins.indexOf(origin) !== -1) {
+      console.log(`✅ Allowing known origin: ${origin}`);
       callback(null, true);
     } else {
+      console.log(`❌ Blocking unknown origin: ${origin}`);
       callback(new Error('Not allowed by CORS'));
     }
   },
@@ -117,8 +125,9 @@ app.use('*', (req, res) => {
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🔒 CORS enabled for Amplify domains`);
 });
 
 module.exports = app;
