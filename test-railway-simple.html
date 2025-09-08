@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Railway Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        button { padding: 15px 30px; margin: 10px; font-size: 16px; background: #3b82f6; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .result { margin: 20px 0; padding: 15px; border-radius: 5px; }
+        .success { background: #f0f9ff; color: green; }
+        .error { background: #fef2f2; color: red; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Simple Railway Test</h1>
+    <p>This test will show if Railway is responding and what CORS headers it's sending.</p>
+    
+    <button onclick="testRailway()">Test Railway Response</button>
+    <div id="result"></div>
+
+    <script>
+        function testRailway() {
+            const result = document.getElementById('result');
+            result.innerHTML = '<div class="result">🔄 Testing Railway...</div>';
+            
+            fetch('https://barbershop-app-production.up.railway.app/api/health', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                console.log('Response headers:', [...response.headers.entries()]);
+                
+                const corsHeaders = {
+                    'Access-Control-Allow-Origin': response.headers.get('Access-Control-Allow-Origin'),
+                    'Access-Control-Allow-Methods': response.headers.get('Access-Control-Allow-Methods'),
+                    'Access-Control-Allow-Headers': response.headers.get('Access-Control-Allow-Headers')
+                };
+                
+                result.innerHTML = `
+                    <div class="result success">
+                        ✅ Railway is responding!<br>
+                        Status: ${response.status}<br>
+                        CORS Headers: <pre>${JSON.stringify(corsHeaders, null, 2)}</pre>
+                    </div>
+                `;
+            })
+            .catch(error => {
+                result.innerHTML = `<div class="result error">❌ Railway test failed: ${error.message}</div>`;
+            });
+        }
+    </script>
+</body>
+</html>
