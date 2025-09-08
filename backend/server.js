@@ -32,9 +32,12 @@ app.use(cors({
     process.env.FRONTEND_MOBILE_URL || 'http://localhost:8081',
     'https://test123.com',
     'http://test123.com',
-    'https://master.dkqmnkxw39wen.amplifyapp.com'
+    'https://master.dkqmnkxw39wen.amplifyapp.com',
+    'https://master.d20ivhuuwamum4.amplifyapp.com'
   ],
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 
 // Body parsing middleware
