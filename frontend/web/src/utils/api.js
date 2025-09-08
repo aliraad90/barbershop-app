@@ -5,8 +5,9 @@ const API_BASE_URL = process.env.REACT_APP_API_URL ||
     ? 'https://barbershop-fy9hjkdus-ali-raads-projects.vercel.app/api'
     : 'http://localhost:5001/api');
 
-// Force AWS Amplify to rebuild
+// Force AWS Amplify to rebuild - VERCEL BACKEND
 console.log('API_BASE_URL:', API_BASE_URL);
+console.log('Using Vercel backend for production!');
 
 const api = axios.create({
   baseURL: API_BASE_URL,
