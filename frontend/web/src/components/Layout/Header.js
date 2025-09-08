@@ -18,13 +18,19 @@ import {
 } from 'react-icons/fi';
 
 const HeaderContainer = styled.header`
-  background-color: var(--bg-primary);
-  border-bottom: 1px solid var(--border-color);
-  box-shadow: var(--shadow);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: var(--shadow-md);
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
   height: 80px;
+  transition: all var(--transition-normal);
+  
+  .dark & {
+    background: rgba(15, 23, 42, 0.95);
+  }
 `;
 
 const HeaderContent = styled.div`
@@ -41,18 +47,24 @@ const Logo = styled(Link)`
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--primary);
+  font-size: 1.75rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   text-decoration: none;
+  transition: all var(--transition-normal);
   
   &:hover {
-    color: var(--primary-dark);
+    transform: scale(1.05);
   }
 `;
 
 const LogoIcon = styled(FiScissors)`
-  font-size: 2rem;
+  font-size: 2.25rem;
+  color: var(--primary);
+  filter: drop-shadow(0 2px 4px rgba(59, 130, 246, 0.3));
 `;
 
 const Nav = styled.nav`
@@ -68,14 +80,32 @@ const Nav = styled.nav`
 const NavLink = styled(Link)`
   color: var(--text-primary);
   text-decoration: none;
-  font-weight: 500;
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--radius-md);
-  transition: all var(--transition-fast);
+  font-weight: 600;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-normal);
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+    transition: all var(--transition-normal);
+    transform: translateX(-50%);
+  }
   
   &:hover {
-    background-color: var(--bg-secondary);
+    background: linear-gradient(135deg, var(--primary-50) 0%, var(--bg-secondary) 100%);
     color: var(--primary);
+    transform: translateY(-1px);
+    
+    &::before {
+      width: 80%;
+    }
   }
 `;
 
@@ -89,18 +119,38 @@ const ActionButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-md);
-  background-color: transparent;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
   color: var(--text-primary);
-  border: none;
+  border: 1px solid var(--border-light);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+    transition: left 0.5s;
+  }
   
   &:hover {
-    background-color: var(--bg-secondary);
+    background: linear-gradient(135deg, var(--primary-50) 0%, var(--primary-100) 100%);
     color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-200);
+    
+    &::before {
+      left: 100%;
+    }
   }
 `;
 
@@ -121,31 +171,52 @@ const UserButton = styled.button`
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-md);
-  background-color: transparent;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
   color: var(--text-primary);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+    transition: left 0.5s;
+  }
   
   &:hover {
-    background-color: var(--bg-secondary);
-    border-color: var(--primary);
+    background: linear-gradient(135deg, var(--primary-50) 0%, var(--primary-100) 100%);
+    border-color: var(--primary-200);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+    
+    &::before {
+      left: 100%;
+    }
   }
 `;
 
 const UserAvatar = styled.div`
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: var(--radius-full);
-  background-color: var(--primary);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
-  font-size: 0.875rem;
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: var(--shadow-sm);
+  border: 2px solid rgba(255, 255, 255, 0.2);
 `;
 
 const Dropdown = styled.div`
@@ -153,34 +224,52 @@ const Dropdown = styled.div`
   top: 100%;
   right: 0;
   margin-top: var(--spacing-sm);
-  background-color: var(--bg-primary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow);
-  min-width: 200px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  min-width: 220px;
   z-index: var(--z-dropdown);
   display: ${props => props.isOpen ? 'block' : 'none'};
+  overflow: hidden;
+  
+  .dark & {
+    background: rgba(15, 23, 42, 0.95);
+  }
 `;
 
 const DropdownItem = styled(Link)`
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
   color: var(--text-primary);
   text-decoration: none;
-  transition: background-color var(--transition-fast);
+  transition: all var(--transition-normal);
+  font-weight: 500;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    transform: scaleY(0);
+    transition: transform var(--transition-normal);
+  }
   
   &:hover {
-    background-color: var(--bg-secondary);
-  }
-  
-  &:first-child {
-    border-radius: var(--radius-md) var(--radius-md) 0 0;
-  }
-  
-  &:last-child {
-    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    background: linear-gradient(135deg, var(--primary-50) 0%, var(--bg-secondary) 100%);
+    color: var(--primary);
+    padding-left: var(--spacing-xl);
+    
+    &::before {
+      transform: scaleY(1);
+    }
   }
 `;
 
@@ -189,20 +278,36 @@ const DropdownButton = styled.button`
   align-items: center;
   gap: var(--spacing-sm);
   width: 100%;
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
   background-color: transparent;
   border: none;
   color: var(--text-primary);
   text-align: left;
   cursor: pointer;
-  transition: background-color var(--transition-fast);
+  transition: all var(--transition-normal);
+  font-weight: 500;
+  position: relative;
   
-  &:hover {
-    background-color: var(--bg-secondary);
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(135deg, var(--danger) 0%, var(--danger-light) 100%);
+    transform: scaleY(0);
+    transition: transform var(--transition-normal);
   }
   
-  &:last-child {
-    border-radius: 0 0 var(--radius-md) var(--radius-md);
+  &:hover {
+    background: linear-gradient(135deg, var(--danger-50) 0%, var(--bg-secondary) 100%);
+    color: var(--danger);
+    padding-left: var(--spacing-xl);
+    
+    &::before {
+      transform: scaleY(1);
+    }
   }
 `;
 

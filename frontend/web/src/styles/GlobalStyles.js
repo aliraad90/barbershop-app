@@ -28,23 +28,39 @@ const GlobalStyles = createGlobalStyle`
   :root {
     /* Light theme colors */
     --bg-primary: #ffffff;
-    --bg-secondary: #f8f9fa;
-    --bg-tertiary: #e9ecef;
-    --text-primary: #212529;
-    --text-secondary: #6c757d;
-    --text-tertiary: #adb5bd;
-    --border-color: #dee2e6;
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --bg-secondary: #f8fafc;
+    --bg-tertiary: #f1f5f9;
+    --bg-quaternary: #e2e8f0;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-tertiary: #94a3b8;
+    --text-quaternary: #cbd5e1;
+    --border-color: #e2e8f0;
+    --border-light: #f1f5f9;
+    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     
-    /* Brand colors */
-    --primary: #007bff;
-    --primary-dark: #0056b3;
-    --primary-light: #66b3ff;
-    --secondary: #6c757d;
-    --success: #28a745;
-    --danger: #dc3545;
-    --warning: #ffc107;
-    --info: #17a2b8;
+    /* Modern Brand colors */
+    --primary: #3b82f6;
+    --primary-dark: #1d4ed8;
+    --primary-light: #60a5fa;
+    --primary-50: #eff6ff;
+    --primary-100: #dbeafe;
+    --primary-500: #3b82f6;
+    --primary-600: #2563eb;
+    --primary-700: #1d4ed8;
+    --primary-900: #1e3a8a;
+    --secondary: #64748b;
+    --accent: #f59e0b;
+    --accent-dark: #d97706;
+    --success: #10b981;
+    --success-light: #34d399;
+    --danger: #ef4444;
+    --danger-light: #f87171;
+    --warning: #f59e0b;
+    --info: #06b6d4;
     
     /* Spacing */
     --spacing-xs: 0.25rem;
@@ -78,14 +94,20 @@ const GlobalStyles = createGlobalStyle`
 
   /* Dark theme */
   .dark {
-    --bg-primary: #1a1a1a;
-    --bg-secondary: #2d2d2d;
-    --bg-tertiary: #3d3d3d;
-    --text-primary: #ffffff;
-    --text-secondary: #b3b3b3;
-    --text-tertiary: #808080;
-    --border-color: #404040;
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-tertiary: #334155;
+    --bg-quaternary: #475569;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-tertiary: #94a3b8;
+    --text-quaternary: #64748b;
+    --border-color: #334155;
+    --border-light: #475569;
+    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
   }
 
   /* RTL support */
@@ -205,7 +227,9 @@ const GlobalStyles = createGlobalStyle`
 
   .shadow { box-shadow: var(--shadow); }
   .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
-  .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+  .shadow-md { box-shadow: var(--shadow-md); }
+  .shadow-lg { box-shadow: var(--shadow-lg); }
+  .shadow-xl { box-shadow: var(--shadow-xl); }
 
   .text-primary { color: var(--primary); }
   .text-secondary { color: var(--text-secondary); }
@@ -220,6 +244,25 @@ const GlobalStyles = createGlobalStyle`
   .bg-danger { background-color: var(--danger); }
   .bg-warning { background-color: var(--warning); }
   .bg-info { background-color: var(--info); }
+
+  /* Modern gradient utilities */
+  .bg-gradient-primary { 
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); 
+  }
+  .bg-gradient-accent { 
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%); 
+  }
+  .bg-gradient-success { 
+    background: linear-gradient(135deg, var(--success) 0%, var(--success-light) 100%); 
+  }
+  .bg-gradient-hero { 
+    background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-900) 50%, var(--accent) 100%); 
+  }
+
+  /* Backdrop blur utilities */
+  .backdrop-blur { backdrop-filter: blur(8px); }
+  .backdrop-blur-sm { backdrop-filter: blur(4px); }
+  .backdrop-blur-lg { backdrop-filter: blur(16px); }
 
   /* Responsive utilities */
   @media (max-width: 768px) {
