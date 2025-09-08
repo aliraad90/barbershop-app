@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vercel Backend Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        button { padding: 15px 30px; margin: 10px; font-size: 16px; background: #3b82f6; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .result { margin: 20px 0; padding: 15px; border-radius: 5px; }
+        .success { background: #f0f9ff; color: green; }
+        .error { background: #fef2f2; color: red; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Vercel Backend Test</h1>
+    <p>Testing your new Vercel backend: <strong>barbershop-fy9hjkdus-ali-raads-projects.vercel.app</strong></p>
+    
+    <button onclick="testVercel()">Test Vercel Backend</button>
+    <button onclick="testEmailOTP()">Test Email OTP</button>
+    <div id="result"></div>
+
+    <script>
+        const VERCEL_URL = 'https://barbershop-fy9hjkdus-ali-raads-projects.vercel.app';
+        
+        function testVercel() {
+            const result = document.getElementById('result');
+            result.innerHTML = '<div class="result">🔄 Testing Vercel backend...</div>';
+            
+            fetch(`${VERCEL_URL}/api/health`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                console.log('Response headers:', [...response.headers.entries()]);
+                
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            })
+            .then(data => {
+                result.innerHTML = `
+                    <div class="result success">
+                        ✅ Vercel Backend SUCCESS!<br>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+            })
+            .catch(error => {
+                result.innerHTML = `<div class="result error">❌ Vercel Backend FAILED: ${error.message}</div>`;
+            });
+        }
+
+        function testEmailOTP() {
+            const result = document.getElementById('result');
+            result.innerHTML = '<div class="result">🔄 Testing Email OTP...</div>';
+            
+            fetch(`${VERCEL_URL}/api/auth/send-email-otp`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: 'test@example.com',
+                    name: 'Test User'
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            })
+            .then(data => {
+                result.innerHTML = `
+                    <div class="result success">
+                        ✅ Email OTP SUCCESS!<br>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+            })
+            .catch(error => {
+                result.innerHTML = `<div class="result error">❌ Email OTP FAILED: ${error.message}</div>`;
+            });
+        }
+    </script>
+</body>
+</html>
