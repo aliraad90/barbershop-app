@@ -86,7 +86,9 @@ const InputGroup = styled.div`
   align-items: center;
 `;
 
-const Input = styled.input`
+const Input = styled.input.withConfig({
+  shouldForwardProp: (prop) => prop !== 'hasIcon',
+})`
   width: 100%;
   padding: var(--spacing-md);
   padding-left: ${props => props.hasIcon ? '3rem' : 'var(--spacing-md)'};
